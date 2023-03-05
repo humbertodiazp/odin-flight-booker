@@ -1,25 +1,10 @@
-# README
+Odin Flight Booker
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Simple rails application to practice populating and building dropdown menus, radio buttons, and nested submissions as part of The Odin Project Curriculum. Link below:
 
-Things you may want to cover:
 
-* Ruby version
+https://www.theodinproject.com/lessons/ruby-on-rails-flight-booker
 
-* System dependencies
 
-* Configuration
 
-* Database creation
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-# odin-flight-booker
