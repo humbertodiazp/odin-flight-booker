@@ -3,5 +3,5 @@
 #
 # Examples:
 #
-   airports = Airport.create([{ name: "MIA" },{ name: "DAL" },{ name: "PHX" }, { name: "SFO" }, { name: "DEN" }, { name: "LAX"}, { name: "NYC"} ])
+   airports = Airport.create([{ airport_code: "MIA" },{ airport_code: "DAL" },{ airport_code: "PHX" }, { airport_code: "SFO" }, { airport_code: "DEN" }, { airport_code: "LAX"}, { airport_code: "NYC"} ])
    
