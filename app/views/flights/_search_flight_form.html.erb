@@ -1,0 +1,34 @@
+<%= form_with url: "/flights", method: :get do |f| %>
+  <div class="form-field">
+    <%= f.label "Depart From:" %>
+    <%= f.select(:departure_airport_id,
+                 options_for_select(@airport_options, params[:departure_airport_id]),
+                 required: true ) %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label "Arrive at:" %>
+    <%= f.select(:arrival_id,
+                 options_for_select(@airport_options, params[:arrival_airport_id]),
+                 required: true ) %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label "Passengers" %>
+    <%= f.select(:passenger_count,
+                 options_for_select([1, 2, 3, 4], params[:passenger_count]),
+                 required: true ) %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label "Date" %>
+    <%= f.date_field :departure_time,
+                      value: params[:departure_time],
+                      required: true,
+                      placeholder: "dd/mm/yyyy" %>
+  </div>
+
+  <div class="form-button">
+    <%= f.submit "Find Flights" %>
+  </div>
+<% end %>
