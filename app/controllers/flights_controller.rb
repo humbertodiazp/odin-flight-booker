@@ -1,6 +1,6 @@
 class FlightsController < ApplicationController
   def index
-    @airport_options = Airport.select(:airport, :id).order(:airport).page(params[:page])
+    @airport_options = Airport.select(:airport, :name).order(:airport).page(params[:page])
 
     if search_params.present?
       if departure_airport == arrival_airport
@@ -14,11 +14,11 @@ class FlightsController < ApplicationController
   private
 
   def search_params
-    params.permit(:departure_airport_id, :arrival_airport_id, :departure_time)
+    params.permit(:departure_airport, :arrival_airport, :departure_time)
   end
 
   def departure_airport
-    @departure_airport ||= Airport.find_by(id: params[:departure_airport_id])
+    @departure_airport ||= Airport.find_by(id: params[:name])
   end
 
   def arrival_airport
