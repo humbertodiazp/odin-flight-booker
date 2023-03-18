@@ -1,22 +1,27 @@
 class BookingsController < ApplicationController
-  def new
-    @booking = Flight.booking_options[search_params]  )
-  end
-
-  def create
-    @booking = Flight.booking_options[search_params]  )
-    
-    respond_to do |format|
+    def new
+      @booking = Booking.new
+    end
+  
+    def show
+      @booking = Booking.find(params[:id])
+    end
+  
+    def create
+      @booking = Booking.new(search_params)
       if @booking.save
-        
-        format.html { redirect_to booking_url(@booking), notice: "Booking succesfully created." }
-        format.json { render :show, status: :created, location: @booking }
-        
+        redirect_to @booking, notice: 'Your flight was successfully booked.'
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @booking.errors, status: :unprocessable_entity }
+        render :new, status: :unprocessable_entity
       end
     end
-  end
+  
+    private 
+    
+    def search_params
+      params.require(:booking).permit(:flight_id, passengers_attributes: [:name, :email])
+    end
+end
+
 
   
