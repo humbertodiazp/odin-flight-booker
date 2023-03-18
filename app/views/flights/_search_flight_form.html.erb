@@ -1,38 +1,25 @@
-<%= form_with url: flights_path, method: :get, class: "bg-white p-4 rounded-md shadow-sm" do |f| %>
-  <div class="form-field mb-4">
-    <%= f.label "Depart From:", class: "text-gray-700 font-semibold mb-2" %>
-    <%= f.select(:departure_airport_id,
-                 options_for_select(@airport_options, params[:departure_airport_id]),
-                 class: "form-select",
-                 required: true ) %>
-  </div>
+<%= form_with url: '/flights', method: :get, class: "bg-white p-4 rounded-md shadow-sm" do |f| %>
 
-  <div class="form-field mb-4">
-    <%= f.label "Arrive at:", class: "text-gray-700 font-semibold mb-2" %>
-    <%= f.select(:arrival_airport_id,
-                 options_for_select(@airport_options, params[:arrival_airport_id]),
-                 class: "form-select",
-                 required: true ) %>
-  </div>
 
-  <div class="form-field mb-4">
-    <%= f.label "Passengers", class: "text-gray-700 font-semibold mb-2" %>
-    <%= f.select(:passenger_count,
-                 options_for_select([1, 2, 3, 4], params[:passenger_count]),
-                 class: "form-select",
-                 required: true ) %>
-  </div>
+  <div class="form-field">
+    <h1> Search for Flights </h1>
+      <div class="align-self-center">
+        <%= f.label :departure_airport_id, hidden: true, class: "form-label" %>
+        <%= f.collection_select :departure_airport_id, Airport.all, :id, :code, required: true, autofocus: true, autocomplete: "departure airport", prompt: "From", class: "form-select m-1 bg-primary" %>
 
-  <div class="form-field mb-4">
-    <%= f.label "Date", class: "text-gray-700 font-semibold mb-2" %>
-    <%= f.date_field :departure_time,
-                      value: params[:departure_time],
-                      class: "form-input",
-                      required: true,
-                      placeholder: "dd/mm/yyyy" %>
-  </div>
+        <%= f.label :arrival_airport_id, hidden: true, class: "form-label" %>
+        <%= f.collection_select :arrival_airport_id, Airport.all, :id, :code, required: true, autofocus: true, autocomplete: "departure airport", prompt: "To", class: "form-select" %>
 
-  <div class="form-button">
-    <%= f.submit "Find Flights", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" %>
+        <%= f.label :ticket_num, hidden: true, class: "form-label" %>
+        <%= f.select :ticket_num, (1..4), required: true, autofocus: true, autocomplete: "tickets", prompt: "Passengers", class: "form-select" %>
+
+        <%= f.label :time, hidden: true, class: "form-label" %>
+        <%= f.date_select :time, required: true, autofocus: true, autocomplete: "time", start_year: Date.today.year, end_year: Date.today.year + 1, use_short_month: true, prompt: { day: 'Day', month: 'Month', year: 'Year' }, order: [:month, :day, :year], class: "form-select" %>
+
+        <%= hidden_field_tag :searching, true %>
+      </div>
+
+      <%= f.submit "Search", class: "btn btn-primary" %>
+    <% end %>
   </div>
-<% end %>
+</div>
