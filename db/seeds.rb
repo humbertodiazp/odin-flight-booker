@@ -20,42 +20,42 @@ TOP_TEN_FLIGHT_DURATIONS = {
  }.freeze
  
  MAX_FLIGHTS_PER_ROUTE = 5
-
-def seed_airports
-  Airport.create(TOP_TEN_FLIGHT_DURATIONS.keys.map { |code| { code: code } })
-end
-
-def seed_flight(day, departure_airport_id, arrival_airport_id, duration_in_min)
-  Flight.create(
-    departure_time: add_random_time_to_day(day),
-    duration_in_min: duration_in_min,
-    departure_airport_id: departure_airport_id,
-    arrival_airport_id: arrival_airport_id
-  )
-end
-
-def add_random_time_to_day(day)
-  day.to_datetime + rand(0..23).hours + rand(0..59).minutes
-end
-
-def seed_random_number_of_flights_on_day(day, departure_airport_id, arrival_airport_id, duration_in_min)
-  rand(0..MAX_FLIGHTS_PER_ROUTE).times do
-    seed_flight(day, departure_airport_id, arrival_airport_id, duration_in_min)
-  end
-end
-
-def seed_flights
-    current_date = Date.today
-    airport_codes = TOP_TEN_FLIGHT_DURATIONS.keys
-    airports = Airport.where(code: airport_codes).pluck(:id, :code).to_h
-    TOP_TEN_FLIGHT_DURATIONS.each do |departure_airport_code, arrival_airport_durations|
-      departure_airport_id = airports[departure_airport_code]
-      arrival_airport_durations.each do |arrival_airport_code, duration_in_min|
-        arrival_airport_id = airports[arrival_airport_code]
-        (current_date..current_date + 1.year).each do |day|
-          seed_random_number_of_flights_on_day(day, departure_airport_id, arrival_airport_id, duration_in_min)
-        end
-      end
-    end
-  end
-end
+ 
+ def seed_airports
+   TOP_TEN_FLIGHT_DURATIONS.each_key { |code| Airport.create(code: code) }
+ end
+ 
+ def seed_flight(day, departure_airport, arrival_airport)
+   Flight.create(
+     departure_time: add_random_time_to_day(day),
+     duration_in_min: TOP_TEN_FLIGHT_DURATIONS[departure_airport][arrival_airport],
+     departure_airport_id: Airport.find_by(code: departure_airport).id,
+     arrival_airport_id: Airport.find_by(code: arrival_airport).id
+   )
+ end
+ 
+ def add_random_time_to_day(day)
+   day.to_datetime + rand(0..23).hours + rand(0..59).minutes
+ end
+ 
+ def seed_random_number_of_flights_on_day(day, departure_airport, arrival_airport)
+   rand(0..MAX_FLIGHTS_PER_ROUTE).times do
+     seed_flight(day, departure_airport, arrival_airport)
+   end
+ end
+ 
+ def seed_flights
+   current_date = Date.today
+   (current_date..current_date + 1.year).each do |day|
+     TOP_TEN_FLIGHT_DURATIONS.each_key do |departure_airport|
+       TOP_TEN_FLIGHT_DURATIONS[departure_airport].each_key do |arrival_airport|
+         seed_random_number_of_flights_on_day(day, departure_airport, arrival_airport)
+       end
+     end
+   end
+ end
+ 
+ Flight.destroy_all
+ Airport.destroy_all
+ seed_airports
+ seed_flights
