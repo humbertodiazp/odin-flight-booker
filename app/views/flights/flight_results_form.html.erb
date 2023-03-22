@@ -1,0 +1,33 @@
+<div class="">
+  <% if @flights && !@flights.empty? %>
+    <div class="text-center">
+      <h4>Outbound flights from <%= @flights.first.departure_airport.code %> to <%= @flights.first.arrival_airport.code %></h4>
+      <h6 class="fw-light"><%= @flights.first.departure_date %></h6>
+    </div>
+    <%= form_with model: @booking, url: "bookings/new/", method: :get, class: "d-flex flex-column align-items-center" do |f| %>
+      <%= hidden_field_tag :num_tickets, params[:num_tickets] %>
+      <% @flights.each do |flight| %>
+        <div class="d-flex justify-content-center align-items-center flex-basis-1">
+          <%= f.radio_button :flight_id, flight.id, class: "form-check-input", required: true %>
+          <div class="text-center d-flex justify-content-between container-sm p-3 flight-card rounded m-3">
+            <div>
+              <div><%= flight.departure_hour %></div>
+              <div><%= flight.departure_airport.code %></div>
+            </div>
+            <div>
+              <div>Nonstop</div>
+              <div><%= flight.duration_in_words %></div>
+            </div>
+            <div>
+              <div><%= flight.arrival_hour %></div>
+              <div><%= flight.arrival_airport.code %></div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <%= f.submit "Book flight", class: "btn btn-primary booking-btn ml-1 mb-5" %>
+    <% end %>
+  <% elsif params[:searching] %>
+    <p class="fw-light text-center">No available flights.</p>
+  <% end %>
+</div>

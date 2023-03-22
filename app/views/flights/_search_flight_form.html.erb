@@ -10,16 +10,18 @@
         <%= f.label :arrival_airport_id, hidden: true, class: "form-label" %>
         <%= f.collection_select :arrival_airport_id, Airport.all, :id, :code, required: true, autofocus: true, autocomplete: "departure airport", prompt: "To", class: "form-select" %>
 
-        <%= f.label :ticket_num, hidden: true, class: "form-label" %>
-        <%= f.select :ticket_num, (1..4), required: true, autofocus: true, autocomplete: "tickets", prompt: "Passengers", class: "form-select" %>
+        <%= f.label :num_tickets, hidden: true, class: "form-label" %>
+        <%= f.select :num_tickets, (1..4), required: true, autofocus: true, autocomplete: "tickets", prompt: "Passengers", class: "form-select" %>
 
-        <%= f.label :time, hidden: true, class: "form-label" %>
-        <%= f.date_select :time, required: true, autofocus: true, autocomplete: "time", start_year: Date.today.year, end_year: Date.today.year + 1, use_short_month: true, prompt: { day: 'Day', month: 'Month', year: 'Year' }, order: [:month, :day, :year], class: "form-select" %>
-
-        <%= hidden_field_tag :searching, true %>
-      </div>
+        <%= f.label :departure_time, hidden: true, class: "form-label" %>
+        <%= f.date_select :departure_time, required: true, autofocus: true, autocomplete: "time", start_year: Date.today.year, end_year: Date.today.year + 1, use_short_month: true, prompt: { day: 'Day', month: 'Month', year: 'Year' }, order: [:month, :day, :year], class: "form-select" %>
+         <%# f.date_field :departure_time,
+                      value: params[:departure_time],
+                      required: true,
+                      placeholder: "dd/mm/yyyy"  %>
 
       <%= f.submit "Search", class: "btn btn-primary" %>
     <% end %>
   </div>
 </div>
+
